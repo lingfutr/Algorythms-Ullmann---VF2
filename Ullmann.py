@@ -185,61 +185,84 @@ def my_condition(matrix):
             return False
     return True
 
-
-
-M=M0
-H=[]
+H={}
 G={}
-d=0
-Mcopy=M.copy()
-
-def Ull(A,B):
-    global d,M,Mcopy
-
-    if my_condition(M):
-        C=mul_matrix(M,transpose_matrix(mul_matrix(M,B)))
-        if condition1(C,A):
-            return M
-    if d < len(M):
-        for i in range(len(M)):
-            if M[d][i]==1 and i not in G.values():
-                G[d]=i
-                for j in range(i+1,len(M)):
-                    M[d][j]=0
-#        show_matrix(M)
-            else:
-                M[d][i]=0
-        d+=1
-        Ull(A,B)
-    else:
-        d-=1
-        for j in range(len(M)):
-            M[d][j]=Mcopy[d][j]
-        Ull(A,B)
-    #return M
 
 
 
+
+"""
 M01=transpose_matrix(read_matrix_from_file("C:\\Users\\Di\\PycharmProjects\\algorythms-Ullmann-VF2\\graphs\\M01"))
 M02=transpose_matrix(read_matrix_from_file("C:\\Users\\Di\\PycharmProjects\\algorythms-Ullmann-VF2\\graphs\\M02"))
 M03=transpose_matrix(read_matrix_from_file("C:\\Users\\Di\\PycharmProjects\\algorythms-Ullmann-VF2\\graphs\\M03"))
 M04=transpose_matrix(read_matrix_from_file("C:\\Users\\Di\\PycharmProjects\\algorythms-Ullmann-VF2\\graphs\\M04"))
-
-C=mul_matrix(M01,transpose_matrix(mul_matrix(M01,B)))
-print(condition1(C,A))
-C=mul_matrix(M02,transpose_matrix(mul_matrix(M02,B)))
-print(condition1(C,A))
-C=mul_matrix(M03,transpose_matrix(mul_matrix(M03,B)))
-print(condition1(C,A))
-C=mul_matrix(M04,transpose_matrix(mul_matrix(M04,B)))
-print(condition1(C,A))
-print()
-
-"""
-Ull(A,B)
-show_matrix(M)
-C=mul_matrix(M,transpose_matrix(mul_matrix(M,B)))
-print(condition1(A,C))
-
+M=read_matrix_from_file("C:\\Users\\Di\\PycharmProjects\\algorythms-Ullmann-VF2\\graphs\\M02")
 """
 
+
+M=m0_init(A,B)
+M0=M.copy()
+
+def candindates(number,matrix):
+    """
+    :param number: 
+    :param matrix: 
+    :return: 
+    """
+    if number>=len(matrix):
+        return []
+    else:
+        ans=[]
+        for i in range(len(matrix)):
+            if matrix[number][i]==1 and i not in G.values():
+                ans.append(i)
+        return ans
+
+def Ull(A, B):
+    """
+    :param A: 
+    :param B: 
+    :return: 
+    """
+
+    pa = len(A)
+    pb = len(B)
+
+
+    aq = len(H)
+    pq = M
+    t = candindates(len(H), M0)
+    for i in range(pa):  # or pb
+
+        if len(t) > 0:
+            H[len(H)] = -1
+            bool = True
+            for j in t:
+
+                if bool == True and j not in G.values():
+                    G[len(G)] = j
+                    M[len(H) - 1][j] = 1
+                    bool = False
+                else:
+                    M[len(H) - 1][j] = 0
+
+        else:
+            H[len(H) - 2]=i
+            del(H[len(H)-1])
+            del(G[len(G)-1])
+            for j in range(pa):
+                M[len(H)][j]=M0[len(H)][j]
+        Ull(A,B)
+
+M0=[[0,1,0,1],[0,1,0,1],[1,1,1,1],[1,1,1,1]]
+print(Ull(A,B))
+
+
+
+
+"""
+    if my_condition(M):
+        C=transpose_matrix(mul_matrix(M,transpose_matrix(mul_matrix(M,B))))
+        if condition1(C,A):
+            return M
+"""
